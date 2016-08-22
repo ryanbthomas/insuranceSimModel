@@ -84,7 +84,7 @@ adjustGrowthRates <- function(grate, len, recycle){
      vec
 }
 
-#' Create Policy Listing
+#' Genereate Policy Listing
 #' @param num Either the total number of policies in the calendar year in which
 #'   start appears or a vector of calendar year policy counts
 #' @param start A date object representing the beginning of the period for
@@ -101,7 +101,7 @@ adjustGrowthRates <- function(grate, len, recycle){
 #'   is 12
 #' @param policyPrefix This is used the generate the policy id for the policy
 #'   listing, default is "POL"
-createPolicyList <- function(num, start, end, growthRate, monthlyExposureWeights, policyTerm, policyPrefix){
+generatePolicyList <- function(num, start, end, growthRate, monthlyExposureWeights, policyTerm, policyPrefix){
      if (missing(growthRate)) {
           growthRate <- 0
      }
