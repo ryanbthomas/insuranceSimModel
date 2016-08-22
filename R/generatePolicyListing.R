@@ -72,9 +72,10 @@ adjustGrowthRates <- function(grate, len, recycle){
 
      vec <- numeric(len)
      vec[seq_len(len)] <- grate[seq_len(len)]
-     if (length(grate) < len){
+     numRates <- length(grate)
+     if (numRates < len){
+
            if (recycle) {
-                numRates <- length(grate)
                 idx <- ((seq_len(len - numRates - 1) - 1) %% numRates) + 1
                 vec[seq.int(from = numRates + 1, to = len)] <- grate[idx]
            }else{
