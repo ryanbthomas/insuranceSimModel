@@ -115,25 +115,33 @@ generatePolicyList <- function(num, start, end, growthRate, monthlyExposureWeigh
      if (missing(policyPrefix)) {
           policyPrefix <- "POL"
      }
+     if (length(num) < 1) {
+          stop() # there may be a better way than a hard stop
+     }
      numProjectYears <- lubridate::year(end) - lubridate::year(start) + 1
 
-     # case 1 num is a singleton => recycle growthRate enough times to cover every year btw start and end
-     if (length(num) == 1) {
 
-          cumGrowthRate <- adjustGrowthRates(growthRate, numProjectYears, recycle = FALSE) %>% cumprod()
-          num <- c(num, num * cumGrowthRate)
-     }
-     # case 2 num is a vector AND length(num) >= max_n (number of years between start and end) =>
-     #    only use the first max_n entries in the num vector
-     if (length(num) > 1 & length(num) >= numProjectYears){
-          num <- num[seq_len(numProjectYears)]
-     }
-     # case 3 num is a vector AND length(num) < max_n (number of years between start and end) =>
-     #    use all of the entries in num vector and project the number of policies in future periods by
-     #    recycling growth rate
-     if (length(num) > 1 & length(num) < numProjectYears) {
+     if (length(num) <= 1) {
+     # case 1 num is a singleton => recycle growthRate enough times to cover
+     # every year btw start and end
+          cumGrowthRate <- (1 + adjustGrowthRates(growthRate, numProjectYears - 1, recycle = FALSE)) %>% cumprod()
+          num <- c(num, ceiling(num * cumGrowthRate))
+     }else{
+
+          if (length(num) > 1 & length(num) >= numProjectYears){
+          # case 2 num is a vector AND length(num) >= max_n (number of years
+          # between start and end) => only use the first max_n entries in the
+          # num vector
+               num <- num[seq_len(numProjectYears)]
+          }else{
+          # case 3 num is a vector AND length(num) < max_n (number of years
+          # between start and end) => use all of the entries in num vector and
+          # project the number of policies in future periods by recycling
+          # growth rate
+
           cumGrowthRate <- adjustGrowthRates(growthRate, numProjectYears - length(num) - 1) %>% cumprod()
           num <- c(num, num[length(num)] * cumGrowthRate)
+          }
      }
 
 
@@ -143,7 +151,7 @@ generatePolicyList <- function(num, start, end, growthRate, monthlyExposureWeigh
      validMonthStarts <- seq.Date(from = start, to = end, by = "month")
      policyLedger <- numeric(numProjectYears * 12)
      for (i in seq_len(numProjectYears)) {
-          policyLedger[(1 + (i-1)*12):(12 * i)] <- allocatePoliciesToMonth(num, monthlyExposureWeights)
+          policyLedger[(1 + (i-1)*12):(12 * i)] <- allocatePoliciesToMonth(num[i], monthlyExposureWeights)
      }
      policyLedger <- policyLedger[ allMonthStarts %in% validMonthStarts]
      startDates <- lapply(seq_along(policyLedger),
