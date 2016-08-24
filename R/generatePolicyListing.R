@@ -139,8 +139,8 @@ generatePolicyList <- function(num, start, end, growthRate, monthlyExposureWeigh
           # project the number of policies in future periods by recycling
           # growth rate
 
-          cumGrowthRate <- adjustGrowthRates(growthRate, numProjectYears - length(num) - 1) %>% cumprod()
-          num <- c(num, num[length(num)] * cumGrowthRate)
+          cumGrowthRate <- (1 + adjustGrowthRates(growthRate, numProjectYears - length(num))) %>% cumprod()
+          num <- c(num, ceiling(num[length(num)] * cumGrowthRate))
           }
      }
 
