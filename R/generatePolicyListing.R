@@ -21,7 +21,7 @@
 #' @return This function returns a date vector of policy effective dates in the same month as
 #'   startOfMonth
 simulateStartDates <- function(numPolicies, startOfMonth, concen){
-     numOfDaysInMonth <- days_in_month(startOfMonth)
+     numOfDaysInMonth <- lubridate::days_in_month(startOfMonth)
      if (missing(concen)) {
           weights <- rep(1, numOfDaysInMonth) / numOfDaysInMonth
      }else{
@@ -145,8 +145,8 @@ generatePolicyList <- function(num, start, end, growthRate, monthlyExposureWeigh
      }
 
 
-     allMonthStarts <- seq.Date(from = ymd(paste0(year(start),"-01-01")),
-                                to = ymd(paste0(year(end), "-12-01")),
+     allMonthStarts <- seq.Date(from = lubridate::ymd(paste0(lubridate::year(start),"-01-01")),
+                                to = lubridate::ymd(paste0(lubridate::year(end), "-12-01")),
                                 by = "month")
      validMonthStarts <- seq.Date(from = start, to = end, by = "month")
      policyLedger <- numeric(numProjectYears * 12)
