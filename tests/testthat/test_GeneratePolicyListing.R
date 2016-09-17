@@ -49,8 +49,8 @@ num_rows <- function(base, years, ...){
 expect_allocation_equals <- function(base, weights, tolerance){
      endDt <- startDt + lubridate::years(1) - lubridate::days(1)
      tmpDf <- generatePolicyList(base, startDt, endDt, monthlyExposureWeights = weights) %>%
-                 group_by(month = lubridate::month(effectiveDate)) %>%
-                 summarize(cnt = n())
+                 dplyr::group_by(month = lubridate::month(effectiveDate)) %>%
+                 dplyr::summarize(cnt = n())
      results <- rep(0, 12)
      results[tmpDf$month] <- tmpDf$cnt
      expectVal <- base * weights

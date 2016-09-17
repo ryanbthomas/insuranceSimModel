@@ -3,20 +3,24 @@ Title: Simulate Insurance Exposure and Loss Data
 Version: 0.0.0.9000
 Authors@R: person("Ryan", "Thomas", email = "rthomas2003@gmail.com", role = c("aut", "cre"))
 Description: This package implements the features of the Casualty Actuarial
-     Society's Loss Simulation Model (LSM) completely in R/Shiny. In addition,
-     the LSM is extended to include policy listing simulation. The goal of this
-     package to provide actuaries and researchers interested in insurance
-     losses a tool to investigate analysis techniques on datasets where
-     ultimate values of claim counts and loss amounts are already known.
+    Society's Loss Simulation Model (LSM) completely in R/Shiny. In addition,
+    the LSM is extended to include policy listing simulation. The goal of this
+    package to provide actuaries and researchers interested in insurance
+    losses a tool to investigate analysis techniques on datasets where
+    ultimate values of claim counts and loss amounts are already known.
 URL: https://github.com/actuarialvoodoo/insuranceSimModel
 BugReports: https://github.com/actuarialvoodoo/insuranceSimModel/issues
-Depends: R (>= 3.3.1)
+Depends:
+    R (>= 3.3.1)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports:
-     dplyr,
-     lubridate,
-     magrittr,
-     stringr
-Suggests: testthat
+    dplyr,
+    lubridate,
+    magrittr,
+    stringr,
+    purrr
+Suggests:
+    testthat
+RoxygenNote: 5.0.1

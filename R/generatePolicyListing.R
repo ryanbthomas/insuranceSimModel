@@ -1,12 +1,3 @@
-#library(lubridate)
-#library(stringr)
-#writtenExposureWeights <- rep(1, 12) / 12
-#numOfPoliciesOrig <- 100
-#growthRate <- c(0.00, 0.00, 0.00)
-#obsPeriodStart <- date("2006-01-01")
-#obsPeriodEnd <-  date("2008-12-31")
-
-#opts <- list()
 
 #' Simulate Policy Start Dates
 #'
@@ -53,9 +44,11 @@ allocatePoliciesToMonth <- function(num, weights){
      if (sum(weights) > 1) {
           weights <- weights / sum(weights)
      }
-     tmp <- rep(0, 12)
-     tbl <- sample(seq_along(weights), size = num, replace = TRUE, prob = weights) %>% table()
-     tmp[names(tbl) %>% as.numeric()] <- tbl %>% as.vector()
+     #tmp <- rep(0, 12)
+     #tbl <- sample(seq_along(weights), size = num, replace = TRUE, prob = weights) %>% table()
+     #tmp[names(tbl) %>% as.numeric()] <- tbl %>% as.vector()
+     numPerMonth <- sample(seq_along(weights), size = num, replace = TRUE, prob = weights)
+     tmp <- purrr::map_dbl(seq_len(12), ~ sum(numPerMonth == .))
      tmp
 }
 
@@ -102,6 +95,7 @@ adjustGrowthRates <- function(grate, len, recycle){
 #'   is 12
 #' @param policyPrefix This is used the generate the policy id for the policy
 #'   listing, default is "POL"
+#' @export
 generatePolicyList <- function(num, start, end, growthRate, monthlyExposureWeights, policyTerm, policyPrefix){
      if (missing(growthRate)) {
           growthRate <- 0
